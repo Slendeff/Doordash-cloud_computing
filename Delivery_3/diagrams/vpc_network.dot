@@ -1,0 +1,76 @@
+digraph vpc_network {
+  rankdir=TB;
+  node [shape=box, style="rounded,filled", fillcolor="#eef4fb", color="#3b6ea5", fontname="Segoe UI,Arial", fontsize=9];
+  edge [fontname="Segoe UI,Arial", fontsize=8, color="#555555"];
+  graph [fontname="Segoe UI,Arial", fontsize=12, label="Figure 2. Regional VPC and network topology (3 AZs per Region)", labelloc=t];
+
+  edge [style=dashed, color="#777777"];
+  Client -> R53 [label="HTTPS / WebSocket"];
+  R53 -> CF [label="static + API cache"];
+  CF -> WAF [label="regional routing"];
+  WAF -> AGW [label="HTTP API"];
+  edge [style=solid, color="#555555"];
+
+  subgraph cluster_us_east {
+    label="us-east-1  |  VPC 10.10.0.0/16  |  45% traffic";
+    style=filled; fillcolor="#f7fbff"; color="#3b6ea5";
+    subgraph cluster_public_e {
+      label="public subnets 10.10.1-3.0/24";
+      style=dashed; color="#d08a00";
+      ALB_E [label="ALB\nHTTP :443\nTG: /health"];
+      NLB_E [label="NLB\nWebSocket :443\nS-02 real-time"];
+      NAT_E [label="NAT GW x3\n0.045 $/h + 0.045 $/GB"];
+    }
+    subgraph cluster_app_e {
+      label="private app subnets 10.10.11-13.0/24";
+      style=dashed; color="#2e7d32";
+      ECS_E [label="ECS Fargate + Service Connect\nS-01..S-15 | 33 avg tasks\n0.5-2 vCPU / 1-4 GB"];
+    }
+    subgraph cluster_data_e {
+      label="private data subnets 10.10.21-23.0/24";
+      style=dashed; color="#7b1fa2";
+      DATA_E [label="RDS Multi-AZ | DynamoDB | ElastiCache\nMSK | OpenSearch | Timestream | S3 endpoints"];
+    }
+    ALB_E -> ECS_E -> DATA_E;
+    NLB_E -> ECS_E;
+    ECS_E -> NAT_E [label="external APIs only"];
+  }
+
+  subgraph cluster_us_west {
+    label="us-west-2  |  VPC 10.20.0.0/16  |  30% traffic";
+    style=filled; fillcolor="#f7fbff"; color="#3b6ea5";
+    ALB_W [label="ALB + NLB\npublic subnets 10.20.1-3.0/24"];
+    ECS_W [label="ECS Fargate + Service Connect\nS-01..S-15 | 29 avg tasks"];
+    DATA_W [label="RDS Multi-AZ | DynamoDB | ElastiCache | MSK | S3"];
+    ALB_W -> ECS_W -> DATA_W;
+  }
+
+  subgraph cluster_ca_central {
+    label="ca-central-1  |  VPC 10.30.0.0/16  |  10% traffic";
+    style=filled; fillcolor="#f7fbff"; color="#3b6ea5";
+    ALB_C [label="ALB + NLB\npublic subnets 10.30.1-3.0/24"];
+    ECS_C [label="ECS Fargate + Service Connect\nS-01..S-15 | 28 avg tasks"];
+    DATA_C [label="RDS Multi-AZ | DynamoDB | ElastiCache | MSK | S3"];
+    ALB_C -> ECS_C -> DATA_C;
+  }
+
+  subgraph cluster_sa_east {
+    label="sa-east-1  |  VPC 10.40.0.0/16  |  15% traffic";
+    style=filled; fillcolor="#f7fbff"; color="#3b6ea5";
+    ALB_S [label="ALB + NLB\npublic subnets 10.40.1-3.0/24"];
+    ECS_S [label="ECS Fargate + Service Connect\nS-01..S-15 | 28 avg tasks"];
+    DATA_S [label="RDS Multi-AZ | DynamoDB | ElastiCache | MSK | S3"];
+    ALB_S -> ECS_S -> DATA_S;
+  }
+
+  AGW -> ALB_E;
+  AGW -> ALB_W;
+  AGW -> ALB_C;
+  AGW -> ALB_S;
+
+  R53 [label="Route 53\nlatency + geolocation"];
+  CF [label="CloudFront\nstatic/menu assets"];
+  WAF [label="WAF\nACL + rate rules"];
+  AGW [label="API Gateway HTTP API\n1.00 $ / million requests"];
+  Client [label="Consumer / Merchant / Dasher / Support"];
+}

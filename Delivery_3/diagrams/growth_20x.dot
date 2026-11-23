@@ -1,0 +1,41 @@
+digraph growth_20x {
+  rankdir=LR;
+  node [shape=box, style="rounded,filled", fillcolor="#f4f7fb", color="#3b6ea5", fontname="Segoe UI,Arial", fontsize=9];
+  edge [fontname="Segoe UI,Arial", fontsize=8, color="#555555"];
+  graph [label="Figure 5. 20× growth path and hard limits", labelloc=t, fontname="Segoe UI,Arial", fontsize=12];
+
+  BASE [label="Initial average\n21.7 M req/h\n6,028 req/s"];
+  GROW [label="20× growth\n434 M req/h\n120,556 req/s"];
+  PEAK [label="20× peak (same shape)\n1.032 B req/h\n286,667 req/s"];
+  BASE -> GROW [label="×20"];
+  GROW -> PEAK [label="diurnal peak"];
+
+  subgraph cluster_ok {
+    label="Scales horizontally with task counts";
+    style=filled; fillcolor="#eef7ee"; color="#2e7d32";
+    C1 [label="S-01 API Gateway\n8 → 87 avg tasks"];
+    C2 [label="S-10 Location\n8 → 54 avg tasks"];
+    C3 [label="S-15 Analytics\n4 → 40 avg tasks"];
+    C4 [label="Fargate total\n118 → 818 avg tasks"];
+  }
+
+  subgraph cluster_limit {
+    label="Requires architectural change";
+    style=filled; fillcolor="#fdeaea"; color="#b3261e";
+    L1 [label="RDS single writer\nshard by order_id / region"];
+    L2 [label="Connection pools\nRDS Proxy + pool limits"];
+    L3 [label="DynamoDB hot keys\nzone partition salting"];
+    L4 [label="MSK partitions\n24 → 480 / 96 → 1,920"];
+    L5 [label="NAT / ALB / API GW\nVPC endpoints + quota increases"];
+  }
+
+  GROW -> C1;
+  GROW -> C2;
+  GROW -> C3;
+  GROW -> C4;
+  GROW -> L1;
+  GROW -> L2;
+  GROW -> L3;
+  GROW -> L4;
+  GROW -> L5;
+}

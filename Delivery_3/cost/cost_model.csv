@@ -1,0 +1,10 @@
+category,initial_monthly_usd,growth_monthly_usd
+Compute (ECS Fargate),4872,49740
+Databases (RDS/DynamoDB/Timestream/OpenSearch/Redshift),30761,559373
+Caching (ElastiCache),2733,10932
+Storage (S3),1472,29440
+Networking (data transfer, NAT, load balancers),761,5224
+Messaging (SQS/SNS/EventBridge/MSK broker capacity),8707,144710
+Monitoring (CloudWatch/X-Ray),12018,240356
+Security (WAF, Secrets Manager, KMS),3477,66058
+Total,64801,1105834

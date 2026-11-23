@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1800" height="1190" viewBox="0 0 1800 1190">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4a5568"/>
+    </marker>
+    <style>
+      .title { font: 700 22px 'Segoe UI', Arial, sans-serif; fill: #1a202c; }
+      .subtitle { font: 12px 'Segoe UI', Arial, sans-serif; fill: #4a5568; }
+      .region { font: 700 14px 'Segoe UI', Arial, sans-serif; fill: #1a365d; }
+      .label { font: 11px 'Segoe UI', Arial, sans-serif; fill: #1a202c; }
+      .small { font: 9.5px 'Segoe UI', Arial, sans-serif; fill: #2d3748; }
+      .tiny { font: 8.5px 'Segoe UI', Arial, sans-serif; fill: #2d3748; }
+      .box { fill: #f8fbff; stroke: #3b6ea5; stroke-width: 1.4; rx: 10; }
+      .public { fill: #fff8e6; stroke: #d08a00; stroke-width: 1; rx: 8; }
+      .app { fill: #eef7ee; stroke: #2e7d32; stroke-width: 1; rx: 8; }
+      .data { fill: #f3edf7; stroke: #7b1fa2; stroke-width: 1; rx: 8; }
+      .edge { stroke: #4a5568; stroke-width: 1.3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <text x="40" y="34" class="title">Figure 1. AWS cloud architecture — four regional cells, ECS Fargate on AWS</text>
+  <text x="40" y="55" class="subtitle">Official AWS service icons · average-load counts · all 15 Delivery 2 services mapped to AWS resources</text>
+
+  <line x1="242" y1="92" x2="286" y2="92" class="edge"/>
+  <line x1="400" y1="92" x2="444" y2="92" class="edge"/>
+  <line x1="560" y1="92" x2="604" y2="92" class="edge"/>
+  <line x1="720" y1="92" x2="764" y2="92" class="edge"/>
+  <line x1="880" y1="92" x2="924" y2="92" class="edge"/>
+
+  <rect x="40" y="68" width="202" height="58" class="box"/>
+  <text x="141" y="88" class="label" text-anchor="middle">Consumer / Merchant / Dasher / Support</text>
+  <text x="141" y="105" class="tiny" text-anchor="middle">HTTPS + WebSocket · 185,000 peak users</text>
+
+  <image href="aws-icons/route53.svg" xlink:href="aws-icons/route53.svg" x="292" y="72" width="30" height="30"/>
+  <text x="330" y="88" class="label">Route 53</text>
+  <text x="330" y="103" class="tiny">latency + geolocation</text>
+
+  <image href="aws-icons/cloudfront.svg" xlink:href="aws-icons/cloudfront.svg" x="450" y="72" width="30" height="30"/>
+  <text x="488" y="88" class="label">CloudFront</text>
+  <text x="488" y="103" class="tiny">static + menu assets</text>
+
+  <image href="aws-icons/waf.svg" xlink:href="aws-icons/waf.svg" x="610" y="72" width="30" height="30"/>
+  <text x="648" y="88" class="label">AWS WAF</text>
+  <text x="648" y="103" class="tiny">ACL + rate rules</text>
+
+  <image href="aws-icons/api_gateway.svg" xlink:href="aws-icons/api_gateway.svg" x="770" y="72" width="30" height="30"/>
+  <text x="808" y="88" class="label">API Gateway HTTP API</text>
+  <text x="808" y="103" class="tiny">$1.00 / million requests</text>
+
+  <image href="aws-icons/elb.svg" xlink:href="aws-icons/elb.svg" x="930" y="72" width="30" height="30"/>
+  <text x="968" y="88" class="label">ALB + NLB per Region</text>
+  <text x="968" y="103" class="tiny">S-01 REST · S-02 WebSocket</text>
+
+  <image href="aws-icons/cloudwatch.svg" xlink:href="aws-icons/cloudwatch.svg" x="1180" y="72" width="30" height="30"/>
+  <text x="1218" y="88" class="label">CloudWatch / X-Ray</text>
+  <text x="1218" y="103" class="tiny">logs · metrics · alarms · traces</text>
+
+  <image href="aws-icons/cognito.svg" xlink:href="aws-icons/cognito.svg" x="1420" y="72" width="30" height="30"/>
+  <text x="1458" y="88" class="label">Cognito / IAM</text>
+  <text x="1458" y="103" class="tiny">JWT · least-privilege roles</text>
+
+  <line x1="1060" y1="126" x2="1060" y2="206" class="edge"/>
+  <line x1="1060" y1="206" x2="410" y2="206" class="edge"/>
+  <line x1="1060" y1="206" x2="1320" y2="206" class="edge"/>
+  <line x1="410" y1="206" x2="410" y2="224" class="edge"/>
+  <line x1="1320" y1="206" x2="1320" y2="224" class="edge"/>
+  <line x1="410" y1="580" x2="410" y2="606" class="edge"/>
+  <line x1="1320" y1="580" x2="1320" y2="606" class="edge"/>
+
+  <rect x="40" y="222" width="740" height="358" class="box"/>
+  <text x="60" y="246" class="region">us-east-1 · 45% traffic · VPC 10.10.0.0/16 · 3 AZs · 33 avg tasks</text>
+  <rect x="60" y="258" width="700" height="52" class="public"/>
+  <text x="74" y="277" class="small">Public subnets 10.10.1-3.0/24 — ALB :443 target groups /health, NLB :443 WebSocket, NAT Gateway ×3</text>
+  <text x="74" y="295" class="tiny">WAF attached to ALB; NAT egress limited to payment, POS, maps, push and identity-provider APIs.</text>
+  <rect x="60" y="320" width="700" height="104" class="app"/>
+  <image href="aws-icons/fargate.svg" xlink:href="aws-icons/fargate.svg" x="72" y="330" width="28" height="28"/>
+  <text x="108" y="342" class="label">ECS Fargate + Service Connect — 15 task families</text>
+  <text x="108" y="358" class="tiny">0.5–2 vCPU / 1–4 GB per task · CPU, request-rate, queue-depth and connection-count target tracking</text>
+  <text x="74" y="382" class="tiny">S-01 API · S-02 Real-time · S-03 Identity · S-04 Catalog · S-05 Search · S-06 Order · S-07 Payment · S-08 Merchant</text>
+  <text x="74" y="400" class="tiny">S-09 Dasher · S-10 Location · S-11 Dispatch · S-12 Route&amp;ETA · S-13 Tracking · S-14 Notification · S-15 Analytics</text>
+  <rect x="60" y="434" width="700" height="128" class="data"/>
+  <text x="74" y="454" class="small">Private data subnets 10.10.21-23.0/24 — Multi-AZ by default</text>
+  <image href="aws-icons/rds.svg" xlink:href="aws-icons/rds.svg" x="74" y="468" width="24" height="24"/>
+  <text x="102" y="479" class="tiny">RDS PostgreSQL db.m6g.large Multi-AZ ×6 clusters; PITR 35 d</text>
+  <image href="aws-icons/dynamodb.svg" xlink:href="aws-icons/dynamodb.svg" x="74" y="500" width="24" height="24"/>
+  <text x="102" y="511" class="tiny">DynamoDB on-demand ×5 tables (Dasher, Assignment, Position, Tracking, Channels)</text>
+  <image href="aws-icons/elasticache.svg" xlink:href="aws-icons/elasticache.svg" x="74" y="532" width="24" height="24"/>
+  <text x="102" y="543" class="tiny">ElastiCache cache.r6g.large ×6 nodes · MSK kafka.m5.large ×3 brokers · S3 Standard + CRR</text>
+  <image href="aws-icons/opensearch.svg" xlink:href="aws-icons/opensearch.svg" x="446" y="468" width="24" height="24"/>
+  <text x="474" y="479" class="tiny">OpenSearch m6g.large.search ×2 (S-05)</text>
+  <image href="aws-icons/timestream.svg" xlink:href="aws-icons/timestream.svg" x="446" y="500" width="24" height="24"/>
+  <text x="474" y="511" class="tiny">Timestream 90-d GPS traces (S-10)</text>
+  <image href="aws-icons/redshift.svg" xlink:href="aws-icons/redshift.svg" x="446" y="532" width="24" height="24"/>
+  <text x="474" y="543" class="tiny">Redshift Serverless SLO metrics (S-15)</text>
+
+  <rect x="940" y="222" width="740" height="358" class="box"/>
+  <text x="960" y="246" class="region">us-west-2 · 30% traffic · VPC 10.20.0.0/16 · 3 AZs · 29 avg tasks</text>
+  <rect x="960" y="258" width="700" height="52" class="public"/>
+  <text x="974" y="277" class="small">Public subnets 10.20.1-3.0/24 — ALB :443, NLB :443, NAT Gateway ×3</text>
+  <text x="974" y="295" class="tiny">Same listeners and target groups as us-east-1; Route 53 shifts traffic during regional failover.</text>
+  <rect x="960" y="320" width="700" height="104" class="app"/>
+  <image href="aws-icons/fargate.svg" xlink:href="aws-icons/fargate.svg" x="972" y="330" width="28" height="28"/>
+  <text x="1008" y="342" class="label">ECS Fargate + Service Connect — same 15 task families</text>
+  <text x="1008" y="358" class="tiny">Region-local order, Dasher and assignment state; no synchronous cross-region dependency</text>
+  <text x="974" y="382" class="tiny">S-01 through S-15 deployed as independent ECS services with per-service task definitions</text>
+  <text x="974" y="400" class="tiny">S-02 connections spread across 3 AZs; reconnect + GET /v1/orders/{id}/tracking fallback</text>
+  <rect x="960" y="434" width="700" height="128" class="data"/>
+  <image href="aws-icons/rds.svg" xlink:href="aws-icons/rds.svg" x="974" y="468" width="24" height="24"/>
+  <text x="1002" y="479" class="tiny">RDS PostgreSQL db.m6g.large Multi-AZ ×6 clusters; PITR 35 d</text>
+  <image href="aws-icons/dynamodb.svg" xlink:href="aws-icons/dynamodb.svg" x="974" y="500" width="24" height="24"/>
+  <text x="1002" y="511" class="tiny">DynamoDB on-demand ×5 tables · conditional writes for CAS</text>
+  <image href="aws-icons/msk.svg" xlink:href="aws-icons/msk.svg" x="974" y="532" width="24" height="24"/>
+  <text x="1002" y="543" class="tiny">MSK ×3 brokers · SQS DLQs · S3 archive · S3 CRR to us-east-1</text>
+  <image href="aws-icons/elasticache.svg" xlink:href="aws-icons/elasticache.svg" x="1346" y="468" width="24" height="24"/>
+  <text x="1374" y="479" class="tiny">ElastiCache ×6 nodes</text>
+  <image href="aws-icons/opensearch.svg" xlink:href="aws-icons/opensearch.svg" x="1346" y="500" width="24" height="24"/>
+  <text x="1374" y="511" class="tiny">OpenSearch ×2 nodes</text>
+  <image href="aws-icons/timestream.svg" xlink:href="aws-icons/timestream.svg" x="1346" y="532" width="24" height="24"/>
+  <text x="1374" y="543" class="tiny">Timestream + Redshift</text>
+
+  <rect x="40" y="606" width="740" height="358" class="box"/>
+  <text x="60" y="630" class="region">ca-central-1 · 10% traffic · VPC 10.30.0.0/16 · 3 AZs · 28 avg tasks</text>
+  <rect x="60" y="642" width="700" height="52" class="public"/>
+  <text x="74" y="661" class="small">Public subnets 10.30.1-3.0/24 — ALB :443, NLB :443, NAT Gateway ×3</text>
+  <text x="74" y="679" class="tiny">Canadian accounts and order history are pinned to this Region for residency.</text>
+  <rect x="60" y="704" width="700" height="104" class="app"/>
+  <image href="aws-icons/fargate.svg" xlink:href="aws-icons/fargate.svg" x="72" y="714" width="28" height="28"/>
+  <text x="108" y="726" class="label">ECS Fargate + Service Connect — same 15 task families</text>
+  <text x="108" y="742" class="tiny">Minimum 2 core tasks per service across 2 AZs; non-critical services minimum 1 per Region</text>
+  <text x="74" y="766" class="tiny">S-01 API · S-02 Real-time · S-03 Identity · S-04 Catalog · S-05 Search · S-06 Order · S-07 Payment · S-08 Merchant</text>
+  <text x="74" y="784" class="tiny">S-09 Dasher · S-10 Location · S-11 Dispatch · S-12 Route&amp;ETA · S-13 Tracking · S-14 Notification · S-15 Analytics</text>
+  <rect x="60" y="818" width="700" height="128" class="data"/>
+  <image href="aws-icons/rds.svg" xlink:href="aws-icons/rds.svg" x="74" y="852" width="24" height="24"/>
+  <text x="102" y="863" class="tiny">RDS PostgreSQL Multi-AZ ×6 clusters · PITR 35 d</text>
+  <image href="aws-icons/dynamodb.svg" xlink:href="aws-icons/dynamodb.svg" x="74" y="884" width="24" height="24"/>
+  <text x="102" y="895" class="tiny">DynamoDB on-demand ×5 tables · region-scoped partition keys</text>
+  <image href="aws-icons/msk.svg" xlink:href="aws-icons/msk.svg" x="74" y="916" width="24" height="24"/>
+  <text x="102" y="927" class="tiny">MSK ×3 brokers · SQS workers · EventBridge schedulers</text>
+  <image href="aws-icons/s3.svg" xlink:href="aws-icons/s3.svg" x="446" y="852" width="24" height="24"/>
+  <text x="474" y="863" class="tiny">S3 Standard + lifecycle to Glacier</text>
+  <image href="aws-icons/elasticache.svg" xlink:href="aws-icons/elasticache.svg" x="446" y="884" width="24" height="24"/>
+  <text x="474" y="895" class="tiny">ElastiCache ×6 nodes</text>
+  <image href="aws-icons/redshift.svg" xlink:href="aws-icons/redshift.svg" x="446" y="916" width="24" height="24"/>
+  <text x="474" y="927" class="tiny">Redshift Serverless SLO rollups</text>
+
+  <rect x="940" y="606" width="740" height="358" class="box"/>
+  <text x="960" y="630" class="region">sa-east-1 · 15% traffic · VPC 10.40.0.0/16 · 3 AZs · 28 avg tasks</text>
+  <rect x="960" y="642" width="700" height="52" class="public"/>
+  <text x="974" y="661" class="small">Public subnets 10.40.1-3.0/24 — ALB :443, NLB :443, NAT Gateway ×3</text>
+  <text x="974" y="679" class="tiny">Latin American orders and Dashers remain in this Region; Colombia/Brazil data-residency controls.</text>
+  <rect x="960" y="704" width="700" height="104" class="app"/>
+  <image href="aws-icons/fargate.svg" xlink:href="aws-icons/fargate.svg" x="972" y="714" width="28" height="28"/>
+  <text x="1008" y="726" class="label">ECS Fargate + Service Connect — same 15 task families</text>
+  <text x="1008" y="742" class="tiny">Region-local dispatch zones; cross-region replication only for aggregated analytics</text>
+  <text x="974" y="766" class="tiny">S-01 API · S-02 Real-time · S-03 Identity · S-04 Catalog · S-05 Search · S-06 Order · S-07 Payment · S-08 Merchant</text>
+  <text x="974" y="784" class="tiny">S-09 Dasher · S-10 Location · S-11 Dispatch · S-12 Route&amp;ETA · S-13 Tracking · S-14 Notification · S-15 Analytics</text>
+  <rect x="960" y="818" width="700" height="128" class="data"/>
+  <image href="aws-icons/rds.svg" xlink:href="aws-icons/rds.svg" x="974" y="852" width="24" height="24"/>
+  <text x="1002" y="863" class="tiny">RDS PostgreSQL Multi-AZ ×6 clusters · PITR 35 d</text>
+  <image href="aws-icons/dynamodb.svg" xlink:href="aws-icons/dynamodb.svg" x="974" y="884" width="24" height="24"/>
+  <text x="1002" y="895" class="tiny">DynamoDB on-demand ×5 tables · 90-day GPS TTL</text>
+  <image href="aws-icons/msk.svg" xlink:href="aws-icons/msk.svg" x="974" y="916" width="24" height="24"/>
+  <text x="1002" y="927" class="tiny">MSK ×3 brokers · SQS DLQs · EventBridge schedulers</text>
+  <image href="aws-icons/timestream.svg" xlink:href="aws-icons/timestream.svg" x="1346" y="852" width="24" height="24"/>
+  <text x="1374" y="863" class="tiny">Timestream GPS traces</text>
+  <image href="aws-icons/backup.svg" xlink:href="aws-icons/backup.svg" x="1346" y="884" width="24" height="24"/>
+  <text x="1374" y="895" class="tiny">AWS Backup cross-region</text>
+  <image href="aws-icons/kms.svg" xlink:href="aws-icons/kms.svg" x="1346" y="916" width="24" height="24"/>
+  <text x="1374" y="927" class="tiny">KMS regional keys</text>
+
+  <rect x="40" y="992" width="1640" height="156" class="box"/>
+  <text x="60" y="1016" class="region">Cross-cutting operations and security — deployed once per Region</text>
+  <image href="aws-icons/cloudwatch.svg" xlink:href="aws-icons/cloudwatch.svg" x="60" y="1036" width="30" height="30"/>
+  <text x="98" y="1048" class="small">CloudWatch Logs</text><text x="98" y="1063" class="tiny">30-d app / 90-d audit; structured JSON</text>
+  <image href="aws-icons/xray.svg" xlink:href="aws-icons/xray.svg" x="360" y="1036" width="30" height="30"/>
+  <text x="398" y="1048" class="small">AWS X-Ray</text><text x="398" y="1063" class="tiny">5% sampled traces; trace_id in logs</text>
+  <image href="aws-icons/secrets.svg" xlink:href="aws-icons/secrets.svg" x="660" y="1036" width="30" height="30"/>
+  <text x="698" y="1048" class="small">Secrets Manager</text><text x="698" y="1063" class="tiny">DB credentials, POS tokens, API keys</text>
+  <image href="aws-icons/kms.svg" xlink:href="aws-icons/kms.svg" x="960" y="1036" width="30" height="30"/>
+  <text x="998" y="1048" class="small">AWS KMS</text><text x="998" y="1063" class="tiny">encryption at rest; TLS 1.2+ in transit</text>
+  <image href="aws-icons/lambda.svg" xlink:href="aws-icons/lambda.svg" x="1240" y="1036" width="30" height="30"/>
+  <text x="1278" y="1048" class="small">Lambda authorizer</text><text x="1278" y="1063" class="tiny">cached JWKS validation at API Gateway</text>
+  <text x="60" y="1092" class="tiny">Alarms → SNS → on-call; ALB health checks /health; ECS liveness /live and readiness /ready; dashboards: latency, errors, throughput, saturation.</text>
+  <text x="60" y="1112" class="tiny">Official AWS icons from the AWS Architecture Icons package, release 07312026. Service icons remain the property of Amazon Web Services, Inc.</text>
+</svg>

@@ -1,0 +1,16 @@
+id,name,vcpu,gb,driver_unit,capacity_per_task,avg_load,peak_load,avg_tasks,peak_tasks,tasks_20x_avg,tasks_20x_peak,scaling_metric
+S-01,API Gateway,1,2,req/s,2000,6028,14333,8,13,87,207,request rate
+S-02,Real-time Gateway,2,4,connections,10000,70000,145000,12,24,200,417,open connections
+S-03,Identity & Account,0.5,1,req/s,300,44,125,8,8,8,14,request rate
+S-04,Merchant Catalog,0.5,1,req/s,500,380,1100,8,8,24,65,menu read rate
+S-05,Search & Discovery,1,2,queries/s,200,430,1040,8,11,64,150,query rate
+S-06,Order,1,2,ops/s,150,220,520,8,9,44,100,request + event ops
+S-07,Payment,0.5,1,req/s,60,28,83,8,8,14,40,authorization rate
+S-08,Merchant Integration,0.5,1,msg/s,100,72,208,8,8,24,60,queue throughput
+S-09,Dasher,0.5,1,req/s,300,140,315,8,8,14,31,state transition rate
+S-10,Location,1,2,writes/s,2500,4528,10000,8,9,54,117,location write rate
+S-11,Dispatch,2,4,orders,5000,17400,50000,9,17,100,287,orders in flight per zone
+S-12,Route & ETA,2,4,req/s,300,950,3000,9,17,93,287,computation rate
+S-13,Tracking,1,2,req/s,500,578,1670,8,9,34,97,read + event rate
+S-14,Notification,0.5,1,msg/s,100,58,170,4,5,18,50,queue depth
+S-15,Analytics Ingestion,1,2,events/s,3000,4000,14300,4,10,40,138,consumer lag

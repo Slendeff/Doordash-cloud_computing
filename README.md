@@ -27,7 +27,7 @@ platform, focused on **Order Management, Route Optimization & Notifications**.
 |---|---|---|---|
 | 1 | Requirements & Workload Model | Done | [group2_delivery1.pdf](Delivery_1/group2_delivery1.pdf) |
 | 2 | Software Architecture | Done | [group2_delivery2.pdf](Delivery_2/group2_delivery2.pdf) |
-| 3 | Cloud Architecture & Scalability | Pending | — |
+| 3 | Cloud Architecture & Scalability | Done | [group2_delivery3.pdf](Delivery_3/group2_delivery3.pdf) |
 | 4 | Prototype, Resilience & Final Architecture | Pending | — |
 
 Key results so far:
@@ -39,6 +39,10 @@ Key results so far:
 - **Delivery 2** — C4 context diagram, 15 services with APIs, data ownership and scaling
   characteristics, polyglot data architecture, sync/async communication matrix, 10 ADRs and full
   FR → service traceability. Cloud-independent by design.
+- **Delivery 3** — AWS cloud architecture across four Regions, ECS Fargate sizing for all 15
+  services (118 average / 164 peak tasks), Multi-AZ VPC and data design, MSK/SQS/SNS/EventBridge
+  messaging, 20× growth analysis (434 M req/h) and on-demand cost estimates ($64,801 →
+  $1,105,834 / month).
 
 ## Repository structure
 
@@ -56,7 +60,12 @@ Key results so far:
 │   ├── group2_delivery2.pdf       # our Software Architecture Document
 │   ├── src/group2_delivery2.md    # report source (Markdown)
 │   └── diagrams/                  # .dot sources, hand-authored service_architecture.svg
-├── Delivery_3/                    # cloud architecture (future)
+├── Delivery_3/
+│   ├── Delivery_3.pdf             # assignment statement
+│   ├── group2_delivery3.pdf       # our Cloud Architecture & Capacity Plan
+│   ├── src/group2_delivery3.md    # report source
+│   ├── diagrams/                  # official AWS icons + .dot/.svg diagram sources
+│   └── cost/                      # capacity model, cost model and pricing sources
 ├── Delivery_4/                    # prototype, resilience report, final architecture (future)
 ├── Prototype/                     # AWS Academy / LocalStack vertical slice (future)
 └── tools/                         # build scripts for the PDFs

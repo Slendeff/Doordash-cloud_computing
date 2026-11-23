@@ -3,7 +3,7 @@
 //   2. Converts the Markdown report (src/*.md) to a styled HTML page.
 //   3. Prints the HTML to PDF with a headless Chromium-based browser (Edge or Chrome).
 //
-// Usage:  cd tools && npm install && npm run build [-- delivery_1|delivery_2]
+// Usage:  cd tools && npm install && npm run build [-- delivery_1|delivery_2|delivery_3]
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join, resolve, basename } from "node:path";
@@ -27,6 +27,12 @@ const DOCS = {
     out: "Delivery_2/group2_delivery2.pdf",
     diagrams: "Delivery_2/diagrams",
     footer: "Team 2 · DoorDash · Delivery 2 — Software Architecture",
+  },
+  delivery_3: {
+    src: "Delivery_3/src/group2_delivery3.md",
+    out: "Delivery_3/group2_delivery3.pdf",
+    diagrams: "Delivery_3/diagrams",
+    footer: "Team 2 · DoorDash · Delivery 3 — Cloud Architecture & Scalability",
   },
 };
 

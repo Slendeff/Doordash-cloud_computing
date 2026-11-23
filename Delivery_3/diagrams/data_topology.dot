@@ -1,0 +1,49 @@
+digraph data_topology {
+  rankdir=LR;
+  node [shape=box, style="rounded,filled", fillcolor="#f4f7fb", color="#3b6ea5", fontname="Segoe UI,Arial", fontsize=9];
+  edge [fontname="Segoe UI,Arial", fontsize=8, color="#555555"];
+  graph [label="Figure 3. Polyglot data mapping (one logical topology per Region)", labelloc=t, fontname="Segoe UI,Arial", fontsize=12];
+
+  subgraph cluster_rel {
+    label="RDS for PostgreSQL — Multi-AZ, PITR, 35-day backups";
+    style=filled; fillcolor="#e8f1fb"; color="#3b6ea5";
+    RDS_ID [label="S-03 Identity\naccounts, roles, addresses"];
+    RDS_CAT [label="S-04 Catalog\nstores, menus, versions"];
+    RDS_ORD [label="S-06 Order\norders, history, outbox, sagas"];
+    RDS_PAY [label="S-07 Payment\npayment intents, double-entry ledger"];
+    RDS_MCH [label="S-08 Merchant Integration\nconfig, transmissions"];
+    RDS_NTF [label="S-14 Notification\ntemplates, preferences"];
+  }
+
+  subgraph cluster_kv {
+    label="DynamoDB — on-demand, conditional writes, 7-day stream retention";
+    style=filled; fillcolor="#fff4e5"; color="#d08a00";
+    DDB_DSH [label="S-09 Dasher\nPK dasher_id | CAS version"];
+    DDB_ASG [label="S-11 Dispatch\nPK order_id | offer status | version"];
+    DDB_POS [label="S-10 Location\nPK dasher_id | 2-min TTL"];
+    DDB_TRK [label="S-13 Tracking\nPK order_id | last_event_seq"];
+    DDB_CH [label="S-02 Real-time\nchannel → connection registry"];
+  }
+
+  CACHE [label="ElastiCache Redis\nS-04 catalog cache | S-12 ETA cache\nS-05 feed cache | cache.r6g.large", fillcolor="#fdeaea", color="#b3261e"];
+  SEARCH [label="Amazon OpenSearch Service\nS-05 geo + full-text index\nversioned upserts from catalog.events", fillcolor="#eef7ee", color="#2e7d32"];
+  TS [label="Amazon Timestream\nS-10 LOCATION_TRACE\n90-day retention", fillcolor="#f3edf7", color="#7b1fa2"];
+  S3 [label="Amazon S3\nmenu images | raw event archive\nanalytics Parquet | S3 CRR", fillcolor="#eef4fb", color="#3b6ea5"];
+  RS [label="Amazon Redshift Serverless\nS-15 columnar analytics\norder/on-time/SLO metrics", fillcolor="#eef7ee", color="#2e7d32"];
+  MSK [label="Amazon MSK\ndurable partitioned topics\nE1-E9 | 7-day retention", fillcolor="#fff8e1", color="#d08a00"];
+
+  RDS_ORD -> MSK [label="outbox relay <200 ms"];
+  RDS_PAY -> MSK;
+  RDS_MCH -> MSK;
+  DDB_DSH -> MSK;
+  DDB_ASG -> MSK;
+  DDB_POS -> TS [label="batched trace writes"];
+  DDB_POS -> MSK [label="location.updates"];
+  MSK -> DDB_TRK;
+  MSK -> SEARCH;
+  MSK -> RS;
+  MSK -> S3 [label="7-day raw archive"];
+  RDS_CAT -> CACHE;
+  CACHE -> SEARCH;
+  RDS_PAY -> S3 [label="reconciliation exports"];
+}

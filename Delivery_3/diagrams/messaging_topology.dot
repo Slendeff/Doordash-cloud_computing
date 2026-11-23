@@ -1,0 +1,60 @@
+digraph messaging_topology {
+  rankdir=LR;
+  node [shape=box, style="rounded,filled", fillcolor="#f4f7fb", color="#3b6ea5", fontname="Segoe UI,Arial", fontsize=9];
+  edge [fontname="Segoe UI,Arial", fontsize=8, color="#555555"];
+  graph [label="Figure 4. Managed messaging and worker scaling", labelloc=t, fontname="Segoe UI,Arial", fontsize=12];
+
+  subgraph cluster_msk {
+    label="Amazon MSK — partitioned by aggregate id, 7-day retention";
+    style=filled; fillcolor="#fff8e1"; color="#d08a00";
+    E1 [label="E1 order.events\n24 partitions"];
+    E2 [label="E2 payment.events\n12 partitions"];
+    E3 [label="E3 merchant.events\n12 partitions"];
+    E6 [label="E6 location.updates\n96 partitions"];
+    E7 [label="E7 dispatch.events\n24 partitions"];
+    OTHER [label="E4 catalog | E5 dasher\nE8 eta | E9 account\n12 partitions each"];
+  }
+
+  S06 [label="S-06 Order\nproducer / saga owner"];
+  S07 [label="S-07 Payment"];
+  S08 [label="S-08 Merchant Integration"];
+  S10 [label="S-10 Location"];
+  S11 [label="S-11 Dispatch"];
+  S13 [label="S-13 Tracking"];
+  S14 [label="S-14 Notification"];
+  S15 [label="S-15 Analytics Ingestion"];
+
+  Q1 [label="Q1 per-merchant SQS\nstandard + DLQ after 5 retries\nvisibility 60 s", fillcolor="#fdeaea", color="#b3261e"];
+  Q2 [label="Q2 per-channel SQS\nstandard + DLQ\nvisibility 30 s", fillcolor="#fdeaea", color="#b3261e"];
+  SNS [label="SNS fan-out\nops alarms + customer channels", fillcolor="#eef7ee", color="#2e7d32"];
+  EB [label="EventBridge\n15 s/30 s dispatch cycles\noffer timeout + saga deadlines", fillcolor="#eef4fb", color="#3b6ea5"];
+  CW [label="CloudWatch Alarms\nqueue depth + consumer lag", fillcolor="#f3edf7", color="#7b1fa2"];
+
+  S06 -> E1;
+  S07 -> E2;
+  S08 -> E3;
+  S10 -> E6;
+  S11 -> E7;
+  E1 -> S07;
+  E1 -> S08;
+  E1 -> S11;
+  E1 -> S13;
+  E2 -> S06;
+  E3 -> S06;
+  E6 -> S11;
+  E6 -> S13;
+  E7 -> S13;
+  E1 -> S15;
+  E6 -> S15;
+  OTHER -> S15;
+
+  E1 -> Q1 [label="OrderCreated"];
+  Q1 -> S08 [label="scale on ApproximateNumberOfMessagesVisible"];
+  E1 -> Q2 [label="OrderConfirmed"];
+  Q2 -> S14 [label="scale on queue depth"];
+  S14 -> SNS;
+  SNS -> CW [label="alarm targets"];
+  EB -> S11 [label="scheduled cycles"];
+  EB -> S06 [label="saga deadlines"];
+  CW -> S15 [label="consumer-lag metric"];
+}
